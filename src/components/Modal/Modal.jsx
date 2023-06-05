@@ -5,8 +5,6 @@ import css from './Modal.module.css';
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
-  
-
   componentDidMount = () => {
     window.addEventListener('keydown', this.handleKeyDown);
   };
@@ -21,8 +19,7 @@ export class Modal extends Component {
     }
   };
 
-  handleBackDropClick = e => {
-   
+  handleBackDropClick = (e) => {
     if (e.target === e.currentTarget) {
       console.log(e.target);
       console.log(e.currentTarget);
@@ -34,11 +31,7 @@ export class Modal extends Component {
     return createPortal(
       <div className={css.overlay} onClick={this.handleBackDropClick}>
         <div className={css.modal}>
-          <img
-            src={this.props.largeImageURL}
-            alt={this.props.tags}
-            
-          />
+          <img src={this.props.largeImageURL} alt={this.props.tags} />
         </div>
       </div>,
       modalRoot

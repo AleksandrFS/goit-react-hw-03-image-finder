@@ -1,12 +1,11 @@
 import { Component } from 'react';
 
-import { BallTriangle } from 'react-loader-spinner';
-
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
 
 import { getData } from '../utils/getPhotos';
+import { Spinner } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -16,6 +15,7 @@ export class App extends Component {
     isLoading: false,
     showBtnLoad: false,
     isEmpty: false,
+    error: null,
   };
 
   componentDidUpdate(p_, prevState) {
@@ -50,6 +50,7 @@ export class App extends Component {
         return;
       }
     } catch (error) {
+      this.setState({ error: error.message });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -63,26 +64,19 @@ export class App extends Component {
 
   render() {
     const show = this.state.photos.length > 0;
-    const { showBtnLoad, isEmpty, isLoading } = this.state;
+    const { showBtnLoad, isEmpty, isLoading, error } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.setQueryValue} />
         {show && <ImageGallery data={this.state.photos} />}
-        {isEmpty && (<p>Nothing was found for your request! Please try another fech.</p>)}
-        {isLoading && (
-          <BallTriangle
-            height={100}
-            width={100}
-            radius={5}
-            color="#ec0867"
-            ariaLabel="ball-triangle-loading"
-            wrapperClass={{}}
-            wrapperStyle=""
-            visible={true}
-          />
-        )}
-
+        {isLoading && <Spinner />}
         {showBtnLoad && <Button onClick={this.handleAddPage} />}
+        {error && <p textAlign="center">{error}</p>}
+        {isEmpty && (
+          <p textAlign="center">
+            Nothing was found for your request! Please try another fech.
+          </p>
+        )}
       </>
     );
   }
