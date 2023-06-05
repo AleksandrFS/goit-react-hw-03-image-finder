@@ -25,7 +25,6 @@ export class App extends Component {
     }
   }
 
-
   setQueryValue = name => {
     this.setState({
       query: name,
@@ -64,18 +63,12 @@ export class App extends Component {
 
   render() {
     const show = this.state.photos.length > 0;
-    const { showBtnLoad, isEmpty, isLoading, showModal } = this.state;
+    const { showBtnLoad, isEmpty, isLoading } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.setQueryValue} />
-        {show && <ImageGallery data={this.state.photos} onClose={showModal} />}
-        {isEmpty && (
-          <>
-            <p textalign="center">
-              Nothing was found for your request! Please try another fech.
-            </p>
-          </>
-        )}
+        {show && <ImageGallery data={this.state.photos} />}
+        {isEmpty && (<p>Nothing was found for your request! Please try another fech.</p>)}
         {isLoading && (
           <BallTriangle
             height={100}

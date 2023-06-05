@@ -17,21 +17,28 @@ export class Modal extends Component {
 
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      this.props.onClick();
     }
   };
 
   handleBackDropClick = e => {
-    if (e.current.target === e.target) {
-      this.props.onClose();
+   
+    if (e.target === e.currentTarget) {
+      console.log(e.target);
+      console.log(e.currentTarget);
+      this.props.onClick();
     }
   };
 
   render() {
     return createPortal(
-      <div className={css.overlay}>
+      <div className={css.overlay} onClick={this.handleBackDropClick}>
         <div className={css.modal}>
-          <img src={this.props.largeImageURL} alt={this.props.tags} />
+          <img
+            src={this.props.largeImageURL}
+            alt={this.props.tags}
+            
+          />
         </div>
       </div>,
       modalRoot

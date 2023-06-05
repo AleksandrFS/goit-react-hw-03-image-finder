@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { Modal } from 'components/Modal/Modal';
 
 export class ImageGalleryItem extends Component {
-  
   state = {
     showModal: false,
   };
@@ -13,16 +12,23 @@ export class ImageGalleryItem extends Component {
     }));
   };
 
+  toggleModal = () => {
+
+  }
+
   render() {
     const { webformatURL, tags, largeImageURL } = this.props;
+    const { showModal} = this.state;
     return (
-      <li className="gallery-item">
+      <li className="gallery-item" onClick={this.showModal}>
         <img src={webformatURL} alt={tags} />
-        <Modal
-          onClick={this.showModal}
-          largeImageURL={largeImageURL}
-          tags={tags}
-        />
+        {showModal && (
+          <Modal
+            largeImageURL={largeImageURL}
+            tags={tags}
+            onClick={this.showModal}
+          />
+        )}
       </li>
     );
   }
