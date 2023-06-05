@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Notiflix from 'notiflix';
 
 export class Searchbar extends Component {
   state = {
@@ -8,12 +9,18 @@ export class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { searchName } = this.state;
+    if (searchName === '') {
+      Notiflix.Notify.warning('Please, enter search fetch');
+
+      return;
+    }
     this.props.onSubmit(searchName);
-    this.setState({ searchName: ''})
+    this.setState({ searchName: '' });
   };
 
-  handleBtnSearch = e => {
+  handleInputAdd = e => {
     const { value } = e.target;
+
     this.setState({ searchName: value });
   };
 
@@ -31,7 +38,8 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            onChange={this.handleBtnSearch}
+            value={this.state.searchName}
+            onChange={this.handleInputAdd}
           />
         </form>
       </header>

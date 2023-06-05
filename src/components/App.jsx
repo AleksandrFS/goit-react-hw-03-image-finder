@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+import { BallTriangle } from 'react-loader-spinner';
+
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
@@ -11,6 +13,7 @@ export class App extends Component {
     query: '',
     page: 1,
     photos: [],
+    isLoading: false,
     showBtnLoad: false,
     isEmpty: false,
   };
@@ -22,26 +25,35 @@ export class App extends Component {
     }
   }
 
+
   setQueryValue = name => {
-    this.setState({ query: name, photos: [], isEmpty: false, page: 1 });
+    this.setState({
+      query: name,
+      photos: [],
+      isEmpty: false,
+      page: 1,
+      showBtnLoad: false,
+    });
   };
 
   getPhotos = async (query, page) => {
+    this.setState({ isLoading: true });
     try {
-      const { hits, totalHits, page: currentPage } = await getData(query, page);
-      
-
+      const { hits, totalHits } = await getData(query, page);
+      const currentPage = this.state.page;
       this.setState(({ photos }) => ({
         photos: [...photos, ...hits],
         showBtnLoad: currentPage < Math.ceil(totalHits / currentPage),
       }));
-      console.log(hits.length);
 
       if (hits.length === 0) {
-        this.setState({ isEmpty: true, query:'' });
-        return
+        this.setState({ isEmpty: true });
+        return;
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   handleAddPage = () => {
@@ -52,12 +64,11 @@ export class App extends Component {
 
   render() {
     const show = this.state.photos.length > 0;
-    const { showBtnLoad, isEmpty } = this.state;
+    const { showBtnLoad, isEmpty, isLoading, showModal } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.setQueryValue} />
-        {show && <ImageGallery data={this.state.photos} />}
-        {showBtnLoad && <Button onClick={this.handleAddPage} />}
+        {show && <ImageGallery data={this.state.photos} onClose={showModal} />}
         {isEmpty && (
           <>
             <p textalign="center">
@@ -65,6 +76,20 @@ export class App extends Component {
             </p>
           </>
         )}
+        {isLoading && (
+          <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="#ec0867"
+            ariaLabel="ball-triangle-loading"
+            wrapperClass={{}}
+            wrapperStyle=""
+            visible={true}
+          />
+        )}
+
+        {showBtnLoad && <Button onClick={this.handleAddPage} />}
       </>
     );
   }
