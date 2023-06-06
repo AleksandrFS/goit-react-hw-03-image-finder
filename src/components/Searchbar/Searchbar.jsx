@@ -1,5 +1,10 @@
 import { Component } from 'react';
 import Notiflix from 'notiflix';
+import PropTypes from 'prop-types';
+import { ImSearch } from 'react-icons/im';
+import { IconContext } from 'react-icons';
+
+import css from './Searchbar.module.css';
 
 export class Searchbar extends Component {
   state = {
@@ -11,7 +16,6 @@ export class Searchbar extends Component {
     const { searchName } = this.state;
     if (searchName === '') {
       Notiflix.Notify.warning('Please, enter search fetch');
-
       return;
     }
     this.props.onSubmit(searchName);
@@ -20,20 +24,24 @@ export class Searchbar extends Component {
 
   handleInputAdd = e => {
     const { value } = e.target;
-
     this.setState({ searchName: value });
   };
 
   render() {
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.handleSubmit}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
-
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={this.handleSubmit}>
+          <IconContext.Provider
+            value={{
+              style: { color: 'black', width: '1.5em', height: '1.5em' },
+            }}>
+            <button type="submit" className={css.searchFormButton}>
+              <ImSearch />
+              <span className={css.searchFormButtonLabel}>Search</span>
+            </button>
+          </IconContext.Provider>
           <input
-            className="input"
+            className={css.searchFormInput}
             type="text"
             autoComplete="off"
             autoFocus
@@ -46,3 +54,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

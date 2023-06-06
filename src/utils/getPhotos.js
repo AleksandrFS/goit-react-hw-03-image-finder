@@ -4,7 +4,7 @@ const API_KEY = '35672310-4fd2f94d19936bfbbb81d2e8c';
 const BASE_URL = 'https://pixabay.com/api/';
 axios.defaults.params = {
   orientation: 'horizontal',
-  per_page: 12,
+  per_page: 15,
 };
 
 export const getData = async (query, page) => {
