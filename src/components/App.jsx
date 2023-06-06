@@ -25,13 +25,14 @@ export class App extends Component {
   }
 
   setQueryValue = name => {
-    this.setState({
-      query: name,
-      photos: [],
-      isEmpty: false,
-      page: 1,
-      showBtnLoad: false,
-    });
+    if (name !== this.state.query)
+      this.setState({
+        query: name,
+        photos: [],
+        isEmpty: false,
+        page: 1,
+        showBtnLoad: false,
+      });
   };
 
   getPhotos = async (query, page) => {
