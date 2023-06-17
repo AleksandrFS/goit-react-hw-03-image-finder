@@ -48,7 +48,6 @@ export class App extends Component {
 
       if (hits.length === 0) {
         this.setState({ isEmpty: true });
-        return;
       }
     } catch (error) {
       this.setState({ error: error.message });
@@ -73,7 +72,7 @@ export class App extends Component {
           {show && <ImageGallery data={this.state.photos} />}
           {isLoading && <Spinner />}
           {showBtnLoad && <Button onClick={this.handleAddPage} />}
-          {error && <p textalign="center">{error}</p>}
+          {error && <p>{error}</p>}
           {isEmpty && (
             <p textalign="center" className={css.warning}>
               Nothing was found for your request! Please try another fech.

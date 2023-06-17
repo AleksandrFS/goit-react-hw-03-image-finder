@@ -26,7 +26,7 @@ export class ImageGalleryItem extends Component {
             className={css.imageGalleryItemImage}
           />
         </li>
-
+      
         {showModal && (
           <Modal
             largeImageURL={largeImageURL}
